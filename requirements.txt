@@ -1,3 +1,4 @@
 Django==5.0.0
 mysqlclient #For Window User
 pymysql #For Mac, Linux User
+pillow
