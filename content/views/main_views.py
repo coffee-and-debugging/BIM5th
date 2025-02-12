@@ -3,7 +3,8 @@ from ..models import Blogs
 from django.contrib.auth.decorators import login_required
 
 def home(request):
-    return render(request, 'main/home.html')
+    blogs= Blogs.objects.all()
+    return render(request, 'main/home.html', {"blogs": blogs})
 
 
 @login_required
