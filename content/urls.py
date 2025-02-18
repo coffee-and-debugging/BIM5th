@@ -9,6 +9,6 @@ urlpatterns = [
     path('login/', login, name="login"),
     path('create/', create_blog),
     path('edit/', edit_blog),
-    path('single/', single_blog),
+    path('<int:id>', single_blog),
 ]
 

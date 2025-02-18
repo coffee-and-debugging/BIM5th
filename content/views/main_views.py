@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from ..models import Blogs
 from django.contrib.auth.decorators import login_required
 
@@ -27,5 +27,6 @@ def create_blog(request):
 def edit_blog(request):
     return render(request, 'main/edit_blog.html')
 
-def single_blog(request):
-    return render(request, 'main/single_blog.html')
+def single_blog(request, id):
+    blog= get_object_or_404(Blogs, pk=id)
+    return render(request, 'main/single_blog.html', {"blog": blog})
