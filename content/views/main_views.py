@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from ..models import Blogs
 from django.contrib.auth.decorators import login_required
 
@@ -18,7 +18,7 @@ def create_blog(request):
         blog= Blogs(title=title, subtitle=subtitle, description=description, image=image)
         blog.save()
         
-        return render(request, 'main/create_blog.html')       
+        return render(request, 'main/home.html')       
         
         
 
@@ -26,6 +26,12 @@ def create_blog(request):
 
 def edit_blog(request):
     return render(request, 'main/edit_blog.html')
+
+def delete_blog(request, id):
+    blog= get_object_or_404(Blogs, pk=id)
+    blog.delete()
+    return redirect("home")
+    
 
 def single_blog(request, id):
     blog= get_object_or_404(Blogs, pk=id)
