@@ -15,7 +15,7 @@ def create_blog(request):
         description= request.POST.get('description')
         image= request.FILES.get("image")
         
-        blog= Blogs(title=title, subtitle=subtitle, description=description, image=image)
+        blog= Blogs(title=title, subtitle=subtitle, description=description, image=image, author=request.user)
         blog.save()
         
         return render(request, 'main/home.html')       
@@ -29,8 +29,11 @@ def edit_blog(request):
 
 def delete_blog(request, id):
     blog= get_object_or_404(Blogs, pk=id)
-    blog.delete()
-    return redirect("home")
+    if blog.author==request.user:
+        blog.delete()
+        return redirect("home")
+    else:
+        return redirect("single")
     
 
 def single_blog(request, id):

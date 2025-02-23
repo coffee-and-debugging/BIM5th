@@ -10,6 +10,6 @@ urlpatterns = [
     path('create/', create_blog),
     path('edit/', edit_blog),
     path('<int:id>/delete/', delete_blog, name="delete"),
-    path('<int:id>', single_blog),
+    path('<int:id>', single_blog, name="single"),
 ]
 
