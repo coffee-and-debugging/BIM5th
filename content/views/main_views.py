@@ -18,14 +18,30 @@ def create_blog(request):
         blog= Blogs(title=title, subtitle=subtitle, description=description, image=image, author=request.user)
         blog.save()
         
-        return render(request, 'main/home.html')       
+        return redirect('home')       
         
         
 
     return render(request, 'main/create_blog.html')
 
-def edit_blog(request):
-    return render(request, 'main/edit_blog.html')
+def edit_blog(request, id):
+    blog = get_object_or_404(Blogs, pk=id)
+    if blog.author != request.user:
+        return redirect("single", id=id)
+    if request.method == "POST":
+        title = request.POST.get("title")
+        subtitle = request.POST.get("subtitle")
+        description = request.POST.get("description")
+        image = request.FILES.get("image")
+        blog.title = title
+        blog.subtitle = subtitle
+        blog.description = description
+        if image:
+            blog.image = image
+        blog.save()
+        return redirect("single", id=id)
+    
+    return render(request, "main/edit_blog.html", {"blog": blog})
 
 def delete_blog(request, id):
     blog= get_object_or_404(Blogs, pk=id)
@@ -39,3 +55,6 @@ def delete_blog(request, id):
 def single_blog(request, id):
     blog= get_object_or_404(Blogs, pk=id)
     return render(request, 'main/single_blog.html', {"blog": blog})
+
+def about_us(request):
+    return render(request, 'main/about_us.html')

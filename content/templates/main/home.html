@@ -5,44 +5,77 @@
     <link href="{% static 'src/styles.css' %}" rel="stylesheet" />
   </head>
 
-  <body>
+  <body class="bg-gray-50 text-gray-900">
     <!-- Navbar -->
     {% include "../components/_navbar.html" %}
-
-
-    <!-- Content -->
-    <div class="flex flex-wrap space-x-10">
-
-      {% for blog in blogs %}
-      <div class="max-w-sm rounded overflow-hidden shadow-lg">
-        <img
-          class="w-full"
-          src="{{blog.image.url}}"
-          alt="Sunset in the mountains"
-        />
-        <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">{{blog.title}}</div>
-          <p class="text-gray-700 text-base">
-            {{blog.subtitle}}
-          </p>
-        </div>
-        <div class="px-6 pt-4 pb-2">
-          <span
-            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-            >#photography</span
-          >
-          <span
-            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-            >#travel</span
-          >
-          <span
-            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-            >#winter</span
-          >
-        </div>
+    <div
+      class="relative w-full h-48 bg-cover bg-center"
+      style="background-image: url('media/images/banner.jpg')"
+    >
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+      <div class="relative z-10 text-center text-white py-24">
+        <h1 class="text-4xl font-extrabold -mt-16">Welcome to CCT Blog!</h1>
+        <p class="text-xl mt-4">Different stories by different authors!</p>
+        {% if user.is_authenticated %}
+        <a
+          href="{% url 'create' %}"
+          class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition duration-300 ease-in-out"
+        >
+          Create Blog
+        </a>
+        {% else %}
+        <a
+          href="{% url 'login' %}?next={% url 'create' %}"
+          class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition duration-300 ease-in-out"
+        >
+          Create Blog
+        </a>
+        {% endif %}
       </div>
-      {% endfor %}
+    </div>
 
+    <div
+      class="max-w-6xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+    >
+      {% for blog in blogs %}
+      <a href="{% url 'single' blog.id %}" class="block">
+        <div
+          class="max-w-sm bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105"
+        >
+          <img
+            class="w-full h-52 object-cover"
+            src="{{ blog.image.url }}"
+            alt="{{ blog.title }}"
+          />
+          <div class="px-6 py-4">
+            <h2 class="font-bold text-2xl text-gray-900 truncate">
+              {{ blog.title }}
+            </h2>
+            <p class="text-gray-600 text-sm mt-1">
+              By
+              <span class="font-semibold text-blue-600"
+                >{{ blog.author.username }}</span
+              >
+            </p>
+            <p class="text-gray-500 text-xs mt-1">
+              {{ blog.created_at|date:"F d, Y" }}
+            </p>
+            <hr class="my-3 border-gray-200" />
+            <p class="text-gray-700 text-base truncate">{{ blog.subtitle }}</p>
+          </div>
+          <div class="px-6 py-4 flex flex-wrap">
+            <span
+              class="inline-block bg-blue-100 text-blue-600 px-3 py-1 text-sm font-medium rounded-full mr-2 mb-2"
+              >#blog</span
+            >
+            <span
+              class="inline-block bg-green-100 text-green-600 px-3 py-1 text-sm font-medium rounded-full mr-2 mb-2"
+              >#lifestyle</span
+            >
+          </div>
+        </div>
+      </a>
+      {% endfor %}
     </div>
 
     <!-- Footer -->
